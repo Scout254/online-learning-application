@@ -67,6 +67,7 @@
                 </configuration>
             </plugin>
         </plugins>
+		<finalName>learning-app-docker</finalName>
 	</build>
 
 </project>

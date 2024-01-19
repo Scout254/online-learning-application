@@ -5,15 +5,15 @@ import lombok.Data;
 @Data
 
 public class CourseRequest {
-    private String title;
+    private String courseTitle;
     private double price;
 
-    public String getTitle() {
-        return title;
+    public String getCourseTitle() {
+        return courseTitle;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setCourseTitle(String courseTitle) {
+        this.courseTitle = courseTitle;
     }
 
     public double getPrice() {

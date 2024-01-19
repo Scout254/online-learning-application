@@ -30,7 +30,7 @@ public class CourseController {
             @PathVariable CourseType courseType) {
 
         Course course = new Course();
-        course.setTitle(courseRequest.getTitle());
+        course.setCourseTitle(courseRequest.getCourseTitle());
         course.setPrice(courseRequest.getPrice());
         course.setCourseType(courseType);
 
@@ -58,4 +58,43 @@ public class CourseController {
         List<Quiz> quizzes = courseService.getQuizForCourse(courseId);
         return new ResponseEntity<>(quizzes, HttpStatus.OK);
     }
+    @PostMapping("/{courseId}/modules/{moduleId}/complete")
+    public ResponseEntity<String> completeModule(@PathVariable Long courseId, @PathVariable Long moduleId) {
+        courseService.completeModule(moduleId);
+        return ResponseEntity.ok("Module marked as completed");
+    }
+
+    @PostMapping("/{courseId}/quizzes/{quizId}/complete")
+    public ResponseEntity<String> completeQuiz(@PathVariable Long courseId, @PathVariable Long quizId) {
+        courseService.completeQuiz(quizId);
+        return ResponseEntity.ok("Quiz marked as completed");
+    }
+    @PutMapping("/edit/{courseId}")
+    public ResponseEntity<Course> editCourse(@PathVariable Long courseId, @RequestBody Course course){
+        Course updatedCourse = courseService.editCourse(courseId, course);
+        return new ResponseEntity<>(updatedCourse, HttpStatus.OK);
+    }
+
+
+    @DeleteMapping("/delete/{courseId}")
+    public ResponseEntity<String> deleteCourse(@PathVariable Long courseId){
+
+        boolean isDeleted = courseService.deleteCourse(courseId);
+
+        if (isDeleted){
+            return ResponseEntity.ok("successfully deleted!");
+        }else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+    @GetMapping("/{courseId}")
+    public ResponseEntity<Course> getCourseById(@PathVariable Long courseId){
+        try{
+            Course course = courseService.getCourseById(courseId);
+            return ResponseEntity.ok(course);
+        }catch (Exception e){
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 }

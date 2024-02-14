@@ -1,6 +1,6 @@
 package com.example.e.development.controller;
 
-import com.example.e.development.subscription.SubscriptionDto;
+import com.example.e.development.subscription.UserWithSubscriptionDTO;
 import com.example.e.development.subscription.SubscriptionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +20,7 @@ public class SubscriptionController {
     @PostMapping("/subscribe/{userId}")
     public ResponseEntity<String> subscribeToPremium(
             @PathVariable Long userId,
-            @RequestBody SubscriptionDto subscriptionDto) {
+            @RequestBody UserWithSubscriptionDTO subscriptionDto) {
 
         subscriptionService.subscribeToPremium(userId, subscriptionDto);
 

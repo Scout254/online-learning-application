@@ -1,11 +1,10 @@
-package com.example.tipmasterpro.auth;
+package com.example.e.development.auth;
 
 
-import com.example.e.development.auth.AuthenticationRequest;
-import com.example.e.development.auth.AuthenticationResponse;
-import com.example.e.development.auth.RegisterRequest;
 import com.example.e.development.config.JwtService;
 import com.example.e.development.token.TokenRepository;
+import com.example.e.development.token.TokenType;
+import com.example.e.development.token.Token;
 import com.example.e.development.user.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
@@ -13,10 +12,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
-
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
-
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

@@ -9,7 +9,7 @@ public class UserDto {
     private Long id;
     private String email;
     private String username;
-    private UserType userType;
+    private Role userType;
     private SubscriptionDto subscription;
     private String password;
     private String imageUrl;
@@ -54,11 +54,11 @@ public class UserDto {
         this.username = username;
     }
 
-    public UserType getUserType() {
+    public Role getUserType() {
         return userType;
     }
 
-    public void setUserType(UserType userType) {
+    public void setUserType(Role userType) {
         this.userType = userType;
     }
 

@@ -1,6 +1,6 @@
 package com.example.e.development.subscription;
 
-import com.example.e.development.user.UserType;
+import com.example.e.development.user.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,9 +10,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class SubscriptionDto {
     private Long userId;
-    private UserType subscriptionType;
+    private Role subscriptionType;
 
-    public void setSubscriptionType(UserType subscriptionType) {
+    public void setSubscriptionType(Role subscriptionType) {
 
     }
 

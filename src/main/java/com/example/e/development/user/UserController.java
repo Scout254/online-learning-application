@@ -30,7 +30,7 @@ public class UserController {
         user.setEmail(userDto.getEmail());
         user.setImageUrl(userDto.getImageUrl());
         user.setPassword(userDto.getPassword()); // Store plain text password (not recommended)
-        user.setUserType(UserType.BASIC); // All users are created as basic initially
+        user.setUserType(Role.BASIC); // All users are created as basic initially
 
         userService.registerUser(user);
 

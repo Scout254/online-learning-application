@@ -6,7 +6,7 @@ import com.example.e.development.course.CourseRepository;
 import com.example.e.development.user.UserRepository;
 import com.example.e.development.user.User;
 import com.example.e.development.user.UserService;
-import com.example.e.development.user.UserType;
+import com.example.e.development.user.Role;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,7 +43,7 @@ public class EnrollmentService {
 
 
             // Check if the user is premium or the course is free or paid
-            if (user.getUserType() == UserType.PREMIUM || course.getCourseType() == CourseType.FREE) {
+            if (user.getUserType() == Role.PREMIUM || course.getCourseType() == CourseType.FREE) {
                 // Premium users can enroll in any course, and all users can enroll in free courses
 
                 // Create enrollment

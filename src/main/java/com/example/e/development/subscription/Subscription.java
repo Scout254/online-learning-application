@@ -1,7 +1,7 @@
 package com.example.e.development.subscription;
 
 import com.example.e.development.user.User;
-import com.example.e.development.user.UserType;
+import com.example.e.development.user.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,11 +21,11 @@ public class Subscription {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    private UserType subscriptionType;
+    private Role subscriptionType;
 
     // Constructors, getters, and setters
 
-    public void setSubscriptionType(UserType subscriptionType) {
+    public void setSubscriptionType(Role subscriptionType) {
         this.subscriptionType = subscriptionType;
     }
 

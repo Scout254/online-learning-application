@@ -1,7 +1,7 @@
 package com.example.e.development.subscription;
 
 import com.example.e.development.user.User;
-import com.example.e.development.user.UserType;
+import com.example.e.development.user.Role;
 import com.example.e.development.user.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,9 +25,9 @@ public class SubscriptionService {
                 .orElseThrow(() -> new EntityNotFoundException("User not found"));
 
         // Check if the user is a basic user before upgrading to premium
-        if (user.getUserType() == UserType.BASIC) {
+        if (user.getUserType() == Role.BASIC) {
             // Upgrade user to premium
-            user.setUserType(UserType.PREMIUM);
+            user.setUserType(Role.PREMIUM);
 
             // Save the updated user to the database
             userRepository.save(user);
@@ -35,7 +35,7 @@ public class SubscriptionService {
             // Create a subscription entry (if needed)
             Subscription subscription = new Subscription();
             subscription.setUser(user);
-            subscription.setSubscriptionType(UserType.PREMIUM);
+            subscription.setSubscriptionType(Role.PREMIUM);
 
             // Save the subscription to the database
             subscriptionRepository.save(subscription);

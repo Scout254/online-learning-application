@@ -1,8 +1,7 @@
 package com.example.e.development.user;
 
 
-import com.example.e.development.user.Role;
-import com.example.e.development.user.User;
+
 import lombok.Data;
 
 @Data

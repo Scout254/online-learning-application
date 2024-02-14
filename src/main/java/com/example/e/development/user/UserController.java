@@ -1,86 +1,154 @@
 package com.example.e.development.user;
 
+import com.example.e.development.user.UserService;
 
-import com.example.e.development.subscription.SubscriptionService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.bind.annotation.*;
 
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import java.security.Principal;
 import java.util.List;
 
+import static org.hibernate.query.sqm.tree.SqmNode.log;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api/v1/users")
+@RequiredArgsConstructor
+
+
 public class UserController {
 
-    private final UserService userService;
-    @Autowired
-    private SubscriptionService subscriptionService;
+    private final UserService service;
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
-    @Autowired
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
+    @PatchMapping("/password-change")
+    public ResponseEntity<?> changePassword(
+            @RequestBody ChangePasswordRequest request,
+            Principal connectedUser
+    ) {
+        try {
+            // Log the user attempting to change the password
+            logger.info("User is attempting to change the password.");
 
-    @PostMapping("/register")
-    public ResponseEntity<String> registerUser(@RequestBody UserDTO userDto) {
-        User user = new User();
-        user.setUsername(userDto.getUsername());
-        user.setEmail(userDto.getEmail());
-        user.setImageUrl(userDto.getImageUrl());
-        user.setPassword(userDto.getPassword()); // Store plain text password (not recommended)
-        user.setUserType(Role.BASIC); // All users are created as basic initially
+            service.changePassword(request, connectedUser);
 
-        userService.registerUser(user);
+            // Log success
+            logger.info("Password changed successfully.");
 
-        return ResponseEntity.ok("User registered successfully");
-    }
-    @PostMapping("/login")
-    public ResponseEntity<String> loginUser(@RequestBody User user){
-        boolean isValidUser = userService.validateUserCredentials(user.getEmail(), user.getPassword());
-        if (isValidUser) {
-            return new ResponseEntity<>("Login successful", HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>("Invalid email or password", HttpStatus.UNAUTHORIZED);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            // Log any exceptions that occur during the password change process
+            logger.error("Error changing password", e);
+
+            // Log failure
+            logger.error("Failed to change password.");
+
+            // Return an appropriate error response
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
-    @GetMapping()
-    public ResponseEntity<List<User>> getAllUsers() {
-        List<User> users = userService.getAllUsers();
-        return ResponseEntity.ok(users);
-    }
-    @PutMapping("/edit/{userId}")
-    public ResponseEntity<User> editUserById(@PathVariable Long userId, User user){
-        User updatedUser = userService.editUserById(userId, user);
 
-        if (updatedUser !=null){
-            return ResponseEntity.ok(updatedUser);
-        }else {
-            return ResponseEntity.notFound().build();
+    @GetMapping("/me")
+    public ResponseEntity<UserDTO> getCurrentUser(Principal connectedUser) {
+        try {
+            User currentUser = service.getCurrentUser(connectedUser);
+            UserDTO userDTO = new UserDTO(currentUser);
+            return ResponseEntity.ok(userDTO);
+        } catch (Exception e) {
+            // Log the exception using SLF4J
+            // Return an appropriate error response
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
-    @GetMapping("/{userId}")
-    public ResponseEntity<User> getUserById(@PathVariable Long userId,@RequestBody User user){
-        User users = userService.getUserById(userId);
-        return ResponseEntity.ok(users);
+    @GetMapping("/all")
+    public ResponseEntity<List<UserDTO>> getAllUsers(Principal connectedUser) {
+        try {
+            // Check if the connected user has the required role
+            if (connectedUser instanceof UsernamePasswordAuthenticationToken) {
+                List<GrantedAuthority> authorities = (List<GrantedAuthority>) ((UsernamePasswordAuthenticationToken) connectedUser).getAuthorities();
+                if (authorities.stream().anyMatch(auth -> auth.getAuthority().equals("ROLE_ADMIN"))) {
+                    List<UserDTO> users = service.getAllUsers();
+
+                    // Log success
+                    logger.info("Successfully fetched all users.");
+
+                    return ResponseEntity.ok(users);
+                }
+            }
+
+            // Return 403 Forbidden if the user doesn't have the required role
+            logger.warn("Unauthorized access to /api/v1/users/all endpoint.");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+        } catch (Exception e) {
+            // Log the exception using SLF4J
+            logger.error("Error fetching users", e);
+
+            // Log failure
+            logger.error("Failed to fetch all users.");
+
+            // Return an appropriate error response
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
-    @DeleteMapping("/delete/{userId}")
-    public ResponseEntity<String> deleteUserById(@PathVariable Long userId){
-        boolean isDeleted = userService.deleteUserById(userId);
+    @PatchMapping("/edit")
+    public ResponseEntity<?> editUser(@RequestBody EditUserRequest editUserRequest, Principal connectedUser) {
+        try {
+            User currentUser = service.getCurrentUser(connectedUser);
 
-        if (isDeleted){
-            return new ResponseEntity<>("User deleted successfully!",HttpStatus.OK);
 
-        }else {
-            return new ResponseEntity<>("User not found or deletion not successful",HttpStatus.NOT_FOUND);
+
+            currentUser.setEmail(editUserRequest.getEmail());
+
+            // Save the updated user
+            service.saveUser(currentUser);
+
+            // Log success
+            logger.info("User information updated successfully.");
+
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            // Log the exception using SLF4J
+            logger.error("Error editing user information", e);
+
+            // Log failure
+            logger.error("Failed to edit user information.");
+
+            // Return an appropriate error response
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<?> deleteUser(Principal connectedUser) {
+        try {
+            User currentUser = service.getCurrentUser(connectedUser);
+
+            // Log the user attempting to delete the account
+            logger.info("User '{}' is attempting to delete their account.", currentUser.getUsername());
+
+            service.deleteUser(currentUser);
+
+            // Log success
+            logger.info("Account deleted successfully for user '{}'.", currentUser.getUsername());
+
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            // Log any exceptions that occur during the account deletion process
+            logger.error("Error deleting account for user '{}'", connectedUser.getName(), e);
+
+            // Log failure
+            logger.error("Failed to delete account for user '{}'.", connectedUser.getName());
+
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
 
 
 }
-
-
-
-
-

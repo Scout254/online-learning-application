@@ -14,7 +14,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 
 public class AuthenticationController {
-    private final AuthenticationService service;
+    private final com.example.tipmasterpro.auth.AuthenticationService service;
     @PostMapping("/register")
     public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterRequest request){
         return ResponseEntity.ok(service.register(request));

@@ -1,11 +1,7 @@
-package com.example.e.development.controller;
+package com.example.e.development.course;
 
-import com.example.e.development.dto.CourseRequest;
-import com.example.e.development.models.Course;
-import com.example.e.development.models.CourseType;
-import com.example.e.development.models.Module;
-import com.example.e.development.models.Quiz;
-import com.example.e.development.service.CourseService;
+import com.example.e.development.models.*;
+import com.example.e.development.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,10 +14,12 @@ import java.util.List;
 public class CourseController {
 
     private final CourseService courseService;
+    private final UserRepository userRepository;
 
     @Autowired
-    public CourseController(CourseService courseService) {
+    public CourseController(CourseService courseService, UserRepository userRepository) {
         this.courseService = courseService;
+        this.userRepository = userRepository;
     }
 
     @PostMapping("/create/{courseType}")
@@ -95,6 +93,11 @@ public class CourseController {
         }catch (Exception e){
             return ResponseEntity.notFound().build();
         }
+    }
+    @GetMapping("/enrolled-courses/{userId}")
+    public ResponseEntity<List<Course>> getEnrolledCoursesForUser(@PathVariable Long userId) {
+        List<Course> enrolledCourses = courseService.getEnrolledCoursesForUser(userId);
+        return new ResponseEntity<>(enrolledCourses, HttpStatus.OK);
     }
 
 }

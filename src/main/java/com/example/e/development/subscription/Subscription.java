@@ -1,11 +1,11 @@
-package com.example.e.development.models;
+package com.example.e.development.subscription;
 
+import com.example.e.development.user.User;
+import com.example.e.development.user.UserType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor

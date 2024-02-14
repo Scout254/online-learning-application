@@ -1,5 +1,7 @@
-package com.example.e.development.models;
+package com.example.e.development.enrollment;
 
+import com.example.e.development.course.Course;
+import com.example.e.development.user.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -7,7 +9,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @Table(name = "enrollments")

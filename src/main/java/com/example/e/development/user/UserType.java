@@ -1,4 +1,4 @@
-package com.example.e.development.models;
+package com.example.e.development.user;
 
 public enum UserType {
     BASIC,

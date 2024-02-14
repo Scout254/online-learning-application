@@ -1,9 +1,6 @@
-package com.example.e.development.models;
+package com.example.e.development.user;
 
 import jakarta.persistence.*;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -12,8 +9,27 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String username;
-    //other fields follow here ....
+
     private String email;
+    private String password;
+    private String imageUrl;
+
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
 
     @Enumerated(EnumType.STRING)
     private UserType userType;
@@ -52,5 +68,6 @@ public class User {
     public void setEmail(String email) {
         this.email = email;
     }
+
 
 }

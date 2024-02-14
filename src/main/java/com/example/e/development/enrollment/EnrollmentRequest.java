@@ -1,6 +1,5 @@
-package com.example.e.development.dto;
+package com.example.e.development.enrollment;
 
-import com.example.e.development.models.UserType;
 import lombok.*;
 
 @Data

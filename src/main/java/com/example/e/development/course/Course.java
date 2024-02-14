@@ -1,5 +1,6 @@
-package com.example.e.development.models;
+package com.example.e.development.course;
 
+import com.example.e.development.enrollment.Enrollment;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -50,6 +51,7 @@ public class Course {
     //store enrollments associated with this course
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
     private List<Enrollment> enrollments = new ArrayList<>();
+
     @Override
     public String toString() {
         return "Course{" +

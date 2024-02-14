@@ -1,6 +1,6 @@
-package com.example.e.development.dto;
+package com.example.e.development.user;
 
-import com.example.e.development.models.UserType;
+import com.example.e.development.subscription.SubscriptionDto;
 import lombok.Data;
 
 @Data
@@ -11,6 +11,24 @@ public class UserDto {
     private String username;
     private UserType userType;
     private SubscriptionDto subscription;
+    private String password;
+    private String imageUrl;
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
 
     public Long getId() {
         return id;

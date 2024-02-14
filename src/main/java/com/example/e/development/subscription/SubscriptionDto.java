@@ -1,11 +1,9 @@
-package com.example.e.development.dto;
+package com.example.e.development.subscription;
 
-import com.example.e.development.models.UserType;
+import com.example.e.development.user.UserType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor

@@ -1,10 +1,12 @@
-package com.example.e.development.service;
+package com.example.e.development.enrollment;
 
-import com.example.e.development.models.*;
-import com.example.e.development.dto.EnrollmentRequest;
-import com.example.e.development.repository.CourseRepository;
-import com.example.e.development.repository.EnrollmentRepository;
-import com.example.e.development.repository.UserRepository;
+import com.example.e.development.course.Course;
+import com.example.e.development.course.CourseType;
+import com.example.e.development.course.CourseRepository;
+import com.example.e.development.user.UserRepository;
+import com.example.e.development.user.User;
+import com.example.e.development.user.UserService;
+import com.example.e.development.user.UserType;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

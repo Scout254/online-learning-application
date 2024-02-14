@@ -1,6 +1,5 @@
 package com.example.e.development.controller;
 
-import com.example.e.development.models.Quiz;
 import com.example.e.development.service.QuizService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

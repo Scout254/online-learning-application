@@ -1,11 +1,10 @@
-package com.example.e.development.service;
+package com.example.e.development.course;
 
-import com.example.e.development.models.Course;
-import com.example.e.development.models.Module;
-import com.example.e.development.models.Quiz;
-import com.example.e.development.repository.CourseRepository;
+import com.example.e.development.course.Course;
+import com.example.e.development.course.CourseRepository;
 import com.example.e.development.repository.ModuleRepository;
 import com.example.e.development.repository.QuizRepository;
+import com.example.e.development.user.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,12 +17,14 @@ public class CourseService {
     private final CourseRepository courseRepository;
     private final ModuleRepository moduleRepository;
     private final QuizRepository quizRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    public CourseService(CourseRepository courseRepository, ModuleRepository moduleRepository, QuizRepository quizRepository) {
+    public CourseService(CourseRepository courseRepository, ModuleRepository moduleRepository, QuizRepository quizRepository, UserRepository userRepository) {
         this.courseRepository = courseRepository;
         this.moduleRepository = moduleRepository;
         this.quizRepository = quizRepository;
+        this.userRepository = userRepository;
     }
 
     public void createCourse(Course course) {
@@ -86,5 +87,10 @@ public class CourseService {
             return true; // Deletion successful
         }
         return false; // Course not found or deletion unsuccessful
+    }
+
+    public List<Course> getEnrolledCoursesForUser(Long userId) {
+        // Retrieve courses associated with the user's enrollments
+        return courseRepository.findByEnrollmentsUserId(userId);
     }
 }

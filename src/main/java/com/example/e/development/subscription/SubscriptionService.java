@@ -1,16 +1,11 @@
-package com.example.e.development.service;
+package com.example.e.development.subscription;
 
-import com.example.e.development.dto.SubscriptionDto;
-import com.example.e.development.models.Subscription;
-import com.example.e.development.models.User;
-import com.example.e.development.models.UserType;
-import com.example.e.development.repository.SubscriptionRepository;
-import com.example.e.development.repository.UserRepository;
+import com.example.e.development.user.User;
+import com.example.e.development.user.UserType;
+import com.example.e.development.user.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class SubscriptionService {

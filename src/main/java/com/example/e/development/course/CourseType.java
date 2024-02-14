@@ -1,4 +1,4 @@
-package com.example.e.development.models;
+package com.example.e.development.course;
 
 public enum CourseType {
     FREE,
